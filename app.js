@@ -1,19 +1,40 @@
 var Greeter = React.createClass({
     getInitialState : function(){
-        return {message : '[default message]'};
+        return {
+            itemOne : '',
+            itemTwo : '',
+            selectValue: 'add'
+            };
     },
-    onGreet : function(){
-          console.log("Greet button is clicked");
-          var name = this.refs.txtName.value;
-          var greetMsg = 'Hi ' + name + ', Have a nice day!';
-          this.setState({message : greetMsg});
+    calculate : function(){
+          console.dir("button is clicked", this.refs.action);
+          var result, number1, number2; 
+          number1 = parseInt(this.refs.itemOne.value);
+          number2 = parseInt(this.refs.itemTwo.value);
+          if(this.state.selectValue === 'add'){
+            result = number1 + number2;
+          }else if(this.state.selectValue === 'sub'){
+            result = number1 - number2;
+          }
+          this.setState({message : result});
         },
+   handleChange:function(e){
+       console.log(e.target.value);
+    this.setState({selectValue:e.target.value});
+    this.calculate();
+  },
     render : function(){
         console.log('re rendering');
         return (
           <div>
-              <input type="text" ref="txtName" />
-              <input type="button" value="Greet" onClick={this.onGreet} id="btnGreet"/>
+              <input type="text" ref="itemOne" />
+              <input type="text" ref="itemTwo" />
+              <select value={this.state.selectValue} 
+                      onChange={this.handleChange} >
+                <option value="add">add</option>
+                <option value="sub">sub</option>
+                </select>
+              <input type="button" value="calculate" onClick={this.calculate} id="btnGreet"/>
               <div>{this.state.message}</div>
           </div>
         );
